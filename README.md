@@ -6,7 +6,7 @@ This Project uses US Bikeshare data to calculate statistics based on an interact
 ## Software used 
 1. **Python**, **Numpy** and **Pandas** installed using **Anaconda**\
 
-2. Text Editor (Atom)\
+2. Text Editor (Atom)
 3. Terminal Interface
 
 ## Files used
@@ -18,7 +18,7 @@ This Project uses US Bikeshare data to calculate statistics based on an interact
 
 * new_york_city.csv
 
-### Data Structure
+## Data Structure
 Randomly selected data for the first six months of 2017 are provided for all three cities. All three of the data files contain the same core six (6) columns:
 
 1. Start Time (e.g., 2017-01-01 00:07:57)
