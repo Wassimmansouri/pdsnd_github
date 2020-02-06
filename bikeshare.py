@@ -15,27 +15,33 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
-    print('Hello! Let\'s explore some US bikeshare data!')
+    print('Let\'s explore US bikeshare data!\n')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     
-    city = input('Enter the City you want to filter based on. [chicago, new york city, washington]:\n').lower()
-    while city not in ['chicago', 'new york city', 'washington']:
-        city = input('NOT A VALID INPUT.\nEnter the City you want to filter based on. [Chicago, New York City, Washington]:\n')
+    getCity = input('Enter City: ...\nChicago, New York City, Washington\n\nINPUT: ').lower()
+    
+    while getCity not in ['chicago', 'new york city', 'washington']:
+        getCity = input('NOT A VALID INPUT.\n\nEnter City: ...\nChicago, New York City, Washington\n\nINPUT: ')
     
 
     # TO DO: get user input for month (all, january, february, ... , june)
-    month = input('Enter the Month you want to filter based on. If you don\'t want any filter, enter "all". [january, february, march, april, may, june, all] :\n').lower()
-    while month not in ['january', 'february', 'march', 'april', 'may', 'june', 'all']:
-        month = input('NOT A VALID INPUT.\nEnter the Month you want to filter based on. If you don\'t want any filter, enter "all". [January, February, March,April, May, June, all] :\n')
+    getMonth = input('\nEnter Month: ...\nFrom "January" to "June" or "all" to choose all months.\n\nINPUT: ').lower()
+    
+    while getMonth not in ['january', 'february', 'march', 'april', 'may', 'june', 'all']:
+        getMonth = input('NOT A VALID INPUT.\n\nEnter Month: ...\nFrom "january" to "june" or "all" to choose all months.\n')
 
                               
     
      # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
-    day = input('Enter the Day you want to filter based on. If you don\'t want any filter, enter "all". [sunday, monday, tuesday, wednesday, thursday, friday, saturday, all]:\n').lower()
-    while day not in ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'all']:
-        day = input('NOT A VALID INPUT.\nEnter the Day you want to filter based on. If you don\'t want any filter, enter "all". [sunday, monday, tuesday, wednesday, thursday, friday, saturday, all]:\n')
+    getDay = input('\nEnter Day: ...\nFrom "Sunday" to "Saturday" or "all" to choose all days of the week.\n\nINPUT: ').lower()
+    
+    while getDay not in ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'all']:
+        getDay = input('NOT A VALID INPUT.\n\nEnter Day: ...\nFrom "Sunday" to "Saturday" or "all" to choose all days of the week.\n\nINPUT:')
+    
+    
+    
     print('-'*40)
-    return city, month, day
+    return getCity, getMonth, getDay
 
 def load_data(city, month, day):
     """
@@ -54,12 +60,10 @@ def load_data(city, month, day):
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
-    # extract month and day of week from Start Time to create new columns
+    
+    # extract month from Start Time to create month column
     df['month'] = df['Start Time'].dt.month
-    df['day_of_week'] = df['Start Time'].dt.weekday_name
-
-
-    # filter by month if applicable
+     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
         months = ['january', 'february', 'march', 'april', 'may', 'june']
@@ -67,10 +71,16 @@ def load_data(city, month, day):
     
         # filter by month to create the new dataframe
         df = df[df['month'] ==  month]
-     # filter by day of week if applicable
+    
+    
+    
+    # extract and day of week from Start Time to create month column
+    df['day_of_week'] = df['Start Time'].dt.weekday_name
+    # filter by day of week if applicable
     if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
+    
     
     return df
 
@@ -102,15 +112,15 @@ def station_stats(df):
     start_time = time.time()
     
     # TO DO: display most commonly used start station
-    print('The most common Start Station: '+ str(df['Start Station'].mode().values[0]))
+    print('The most common Start Station: {}'.format(df['Start Station'].value_counts().idxmax()))
 
     # TO DO: display most commonly used end station
-    print('The most common End Station: ' + str(df['End Station'].mode().values[0]))
+    print('The most common End Station: {}'.format(df['End Station'].value_counts().idxmax()))
 
     # TO DO: display most frequent combination of start station and end station trip
     df['routes'] = df['Start Station']+ " -- " + df['End Station']
     print("The most common Start and End station: {}".format(
-        df['routes'].mode().values[0])
+        df['routes'].value_counts().idxmax())
     )
     
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -124,11 +134,11 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # TO DO: display total travel time
-    print('Total travel time: '+ str(df['Trip Duration'].sum()))
+    print('Total travel time: {}'.format(df['Trip Duration'].sum()))
 
     # TO DO: display mean travel time
     
-    print('Mean travel time: '+ str(df['Trip Duration'].mean()))
+    print('Mean travel time: {}'.format(df['Trip Duration'].mean()))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -141,12 +151,12 @@ def user_stats(df):
     start_time = time.time()
 
     # TO DO: Display counts of user types
-    print('user types:\n'+ str(df['User Type'].value_counts()))
+    print('user types:\n{}'.format(df['User Type'].value_counts()))
     
     
     # TO DO: Display counts of gender
     if 'Gender' in list(df.columns):
-        print('\nCounts of Gender:\n' +  str(df['Gender'].value_counts(dropna = False)))
+        print('\nCounts of Gender:\n{}'.format(df['Gender'].value_counts(dropna = False)))
     else: 
         print('Error')
     
@@ -154,13 +164,13 @@ def user_stats(df):
     # Earliest Year of Birth
     if 'Birth Year' in list(df.columns):
         # Earliest Year of Birth
-        print('\nEarliest Year of Birth :' + str(int(df['Birth Year'].min())))
+        print('\nEarliest Year of Birth :{}'.format(int(df['Birth Year'].min())))
         
         # Most Recent Year of Birth
-        print('Most Recent Year of Birth :' + str(int(df['Birth Year'].max())))
+        print('Most Recent Year of Birth :{}'.format(int(df['Birth Year'].max())))
         
         #Most Common Year of Birth
-        print('Most Common Year of Birth :' + str(int(df['Birth Year'].mode().values[0])))
+        print('Most Common Year of Birth :{}'.format(int(df['Birth Year'].mode().values[0])))
     else : 
         print('\nEarliest Year of Birth : Error\nMost Recent Year of Birth : Error\nMost Common Year of Birth : Error')
           
