@@ -134,11 +134,11 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # TO DO: display total travel time
-    print('Total travel time: '+ str(df['Trip Duration'].sum()))
+    print('Total travel time: {}'.format(df['Trip Duration'].sum()))
 
     # TO DO: display mean travel time
     
-    print('Mean travel time: '+ str(df['Trip Duration'].mean()))
+    print('Mean travel time: {}'.format(df['Trip Duration'].mean()))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -151,12 +151,12 @@ def user_stats(df):
     start_time = time.time()
 
     # TO DO: Display counts of user types
-    print('user types:\n'+ str(df['User Type'].value_counts()))
+    print('user types:\n{}'.format(df['User Type'].value_counts()))
     
     
     # TO DO: Display counts of gender
     if 'Gender' in list(df.columns):
-        print('\nCounts of Gender:\n' +  str(df['Gender'].value_counts(dropna = False)))
+        print('\nCounts of Gender:\n{}'.format(df['Gender'].value_counts(dropna = False)))
     else: 
         print('Error')
     
@@ -164,13 +164,13 @@ def user_stats(df):
     # Earliest Year of Birth
     if 'Birth Year' in list(df.columns):
         # Earliest Year of Birth
-        print('\nEarliest Year of Birth :' + str(int(df['Birth Year'].min())))
+        print('\nEarliest Year of Birth :{}'.format(int(df['Birth Year'].min())))
         
         # Most Recent Year of Birth
-        print('Most Recent Year of Birth :' + str(int(df['Birth Year'].max())))
+        print('Most Recent Year of Birth :{}'.format(int(df['Birth Year'].max())))
         
         #Most Common Year of Birth
-        print('Most Common Year of Birth :' + str(int(df['Birth Year'].mode().values[0])))
+        print('Most Common Year of Birth :{}'.format(int(df['Birth Year'].mode().values[0])))
     else : 
         print('\nEarliest Year of Birth : Error\nMost Recent Year of Birth : Error\nMost Common Year of Birth : Error')
           
